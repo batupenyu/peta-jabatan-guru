@@ -132,7 +132,7 @@ export function syncPetaJabatanWithTeachers(items: PetaItem[], teachers: Teacher
     const matched = teachers.filter((t) => matchTeacherToPetaItem(t, item));
 
     const pnsCount = matched.filter((t) => t.status === 'PNS').length;
-    const pppkCount = matched.filter((t) => t.status === 'PPPK').length;
+    const pppkCount = matched.filter((t) => t.status === 'PPPK' || t.status === 'PPPKPW').length;
     const gttCount = matched.filter((t) => t.status === 'GTT').length;
 
     // Use synchronized count if matched teachers exist, or retain manual entry

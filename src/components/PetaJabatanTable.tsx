@@ -513,7 +513,11 @@ export const PetaJabatanTable: React.FC<PetaJabatanTableProps> = ({
                                         className={`font-mono text-[10px] px-1.5 py-0.2 rounded-xs font-semibold ${
                                           t.status === 'PNS'
                                             ? 'bg-slate-100 text-slate-800 border border-slate-200'
-                                            : 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                                            : t.status === 'PPPKPW'
+                                            ? 'bg-violet-50 text-violet-700 border border-violet-200'
+                                            : t.status === 'PPPK'
+                                            ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                                            : 'bg-amber-50 text-amber-700 border border-amber-200'
                                         }`}
                                       >
                                         {t.status}

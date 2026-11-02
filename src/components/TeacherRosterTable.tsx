@@ -33,7 +33,7 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
   isSyncing = false,
 }) => {
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'ALL' | 'PNS' | 'PPPK' | 'GTT'>('ALL');
+  const [statusFilter, setStatusFilter] = useState<'ALL' | 'PNS' | 'PPPK' | 'PPPKPW' | 'GTT'>('ALL');
   const [retirementFilter, setRetirementFilter] = useState<'ALL' | 'CRITICAL' | 'WARNING'>('ALL');
   const [sortBy, setSortBy] = useState<'name' | 'nip' | 'status' | 'age' | 'retirement'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
@@ -47,6 +47,8 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
   const totalTeachers = teachers.length;
   const totalPns = teachers.filter((t) => t.status === 'PNS').length;
   const totalPppk = teachers.filter((t) => t.status === 'PPPK').length;
+  const totalPppkPw = teachers.filter((t) => t.status === 'PPPKPW').length;
+  const totalGtt = teachers.filter((t) => t.status === 'GTT').length;
   const criticalRetirementCount = teachersWithInfo.filter(
     (t) => t.nipInfo.retirementUrgency === 'CRITICAL_1_2_YEARS'
   ).length;
@@ -118,12 +120,17 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
         </div>
 
         <div className="bg-white border border-slate-200 rounded-lg p-3.5">
-          <span className="text-[11px] font-medium text-slate-500 block">Guru ASN PPPK</span>
-          <div className="flex items-baseline gap-1.5 mt-1">
-            <span className="text-xl font-bold font-mono tabular-nums text-indigo-700">{totalPppk}</span>
+          <span className="text-[11px] font-medium text-slate-500 block">Guru ASN PPPK / PW</span>
+          <div className="flex items-baseline gap-1.5 mt-1 flex-wrap">
+            <span className="text-xl font-bold font-mono tabular-nums text-indigo-700">{totalPppk + totalPppkPw}</span>
             <span className="text-xs text-slate-500 font-mono">
-              ({totalTeachers > 0 ? Math.round((totalPppk / totalTeachers) * 100) : 0}%)
+              ({totalTeachers > 0 ? Math.round(((totalPppk + totalPppkPw) / totalTeachers) * 100) : 0}%)
             </span>
+            {totalPppkPw > 0 && (
+              <span className="text-[10px] text-violet-700 bg-violet-50 px-1 py-0.2 rounded font-mono font-medium border border-violet-200">
+                {totalPppkPw} PW
+              </span>
+            )}
           </div>
         </div>
 
@@ -187,6 +194,28 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
               >
                 PPPK ({totalPppk})
               </button>
+              <button
+                onClick={() => setStatusFilter('PPPKPW')}
+                className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
+                  statusFilter === 'PPPKPW'
+                    ? 'bg-white text-violet-700 shadow-2xs font-semibold'
+                    : 'text-slate-600 hover:text-slate-900'
+                }`}
+              >
+                PPPKPW ({totalPppkPw})
+              </button>
+              {totalGtt > 0 && (
+                <button
+                  onClick={() => setStatusFilter('GTT')}
+                  className={`px-2.5 py-1 text-xs font-medium rounded-md transition-colors ${
+                    statusFilter === 'GTT'
+                      ? 'bg-white text-amber-700 shadow-2xs font-semibold'
+                      : 'text-slate-600 hover:text-slate-900'
+                  }`}
+                >
+                  GTT ({totalGtt})
+                </button>
+              )}
             </div>
 
             {/* Filter Pensiun */}
@@ -338,6 +367,8 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
                               ? 'bg-slate-100 text-slate-800 border border-slate-200'
                               : item.status === 'PPPK'
                               ? 'bg-indigo-50 text-indigo-700 border border-indigo-200'
+                              : item.status === 'PPPKPW'
+                              ? 'bg-violet-50 text-violet-700 border border-violet-200'
                               : 'bg-amber-50 text-amber-700 border border-amber-200'
                           }`}
                         >

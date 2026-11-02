@@ -6,7 +6,7 @@ export type FunctionalLevel =
 
 export type JobStatus = 'KURANG' | 'LEBIH' | 'SESUAI';
 
-export type EmployeeStatus = 'PNS' | 'PPPK' | 'GTT';
+export type EmployeeStatus = 'PNS' | 'PPPK' | 'PPPKPW' | 'GTT';
 
 export interface CalculationDetails {
   rombelCount: number;

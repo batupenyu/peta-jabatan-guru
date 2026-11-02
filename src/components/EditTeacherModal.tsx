@@ -125,6 +125,7 @@ export const EditTeacherModal: React.FC<EditTeacherModalProps> = ({
               >
                 <option value="PNS">PNS</option>
                 <option value="PPPK">PPPK</option>
+                <option value="PPPKPW">PPPKPW</option>
                 <option value="GTT">GTT (Honorer)</option>
               </select>
             </div>
