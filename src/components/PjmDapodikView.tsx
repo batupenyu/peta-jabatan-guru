@@ -15,7 +15,8 @@ import {
   RefreshCw,
   Info,
   ShieldCheck,
-  AlertCircle
+  AlertCircle,
+  Grid3X3,
 } from 'lucide-react';
 
 interface PjmDapodikViewProps {
@@ -23,6 +24,7 @@ interface PjmDapodikViewProps {
   teachers: Teacher[];
   petaItems: PetaItem[];
   onApplyPjmToPetaJabatan: () => void;
+  onNavigateToClassMap?: () => void;
   isSyncing: boolean;
 }
 
@@ -31,6 +33,7 @@ export const PjmDapodikView: React.FC<PjmDapodikViewProps> = ({
   teachers,
   petaItems,
   onApplyPjmToPetaJabatan,
+  onNavigateToClassMap,
   isSyncing,
 }) => {
   const [search, setSearch] = useState('');
@@ -143,7 +146,16 @@ export const PjmDapodikView: React.FC<PjmDapodikViewProps> = ({
             </p>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            {onNavigateToClassMap && (
+              <button
+                onClick={onNavigateToClassMap}
+                className="px-3.5 py-2 text-xs font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-colors flex items-center gap-1.5 shadow-2xs"
+              >
+                <Grid3X3 className="w-3.5 h-3.5 text-indigo-600" />
+                <span>Buka Peta Kelas (18 Rombel)</span>
+              </button>
+            )}
             <button
               onClick={onApplyPjmToPetaJabatan}
               disabled={isSyncing}

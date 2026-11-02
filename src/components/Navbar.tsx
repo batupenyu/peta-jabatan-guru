@@ -8,9 +8,10 @@ import {
   Sparkles,
   Download,
   Clock,
+  Grid3X3,
 } from 'lucide-react';
 
-export type AppTab = 'editor' | 'roster' | 'pjm' | 'analysis' | 'calculator' | 'print';
+export type AppTab = 'editor' | 'roster' | 'pjm' | 'classmap' | 'analysis' | 'calculator' | 'print';
 
 interface NavbarProps {
   activeTab: AppTab;
@@ -84,6 +85,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Clock className="w-3.5 h-3.5 text-emerald-600" />
               Jam Mengajar (PJM)
+            </button>
+            <button
+              onClick={() => setActiveTab('classmap')}
+              className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors whitespace-nowrap shrink-0 flex items-center gap-1.5 ${
+                activeTab === 'classmap'
+                  ? 'bg-slate-100 text-slate-900'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <Grid3X3 className="w-3.5 h-3.5 text-indigo-600" />
+              Peta Kelas (18 Rombel)
             </button>
             <button
               onClick={() => setActiveTab('analysis')}

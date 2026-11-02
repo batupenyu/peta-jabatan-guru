@@ -15,6 +15,7 @@ import { PetaJabatanTable } from './components/PetaJabatanTable';
 import { TeacherRosterTable } from './components/TeacherRosterTable';
 import { AnalysisDashboard } from './components/AnalysisDashboard';
 import { PjmDapodikView } from './components/PjmDapodikView';
+import { ClassMappingView } from './components/ClassMappingView';
 import { StandaloneCalculator } from './components/StandaloneCalculator';
 import { PrintPreviewModal } from './components/PrintPreviewModal';
 import { SchoolMetadataModal } from './components/SchoolMetadataModal';
@@ -602,8 +603,14 @@ c. Pengembangan Karir: Mendorong 14 guru ASN PPPK dan guru PNS jenjang Ahli Pert
             teachers={currentTeachers}
             petaItems={currentItems}
             onApplyPjmToPetaJabatan={handleApplyPjmToPetaJabatan}
+            onNavigateToClassMap={() => setActiveTab('classmap')}
             isSyncing={isSyncing}
           />
+        )}
+
+        {/* Tab: Peta Kelas & Distribusi Jam Mengajar (18 Rombel) */}
+        {activeTab === 'classmap' && (
+          <ClassMappingView />
         )}
 
         {/* Tab 4: Real-time Analysis & Recommendations */}
