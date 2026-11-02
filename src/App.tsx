@@ -14,6 +14,7 @@ import { SummaryCards } from './components/SummaryCards';
 import { PetaJabatanTable } from './components/PetaJabatanTable';
 import { TeacherRosterTable } from './components/TeacherRosterTable';
 import { AnalysisDashboard } from './components/AnalysisDashboard';
+import { PjmDapodikView } from './components/PjmDapodikView';
 import { StandaloneCalculator } from './components/StandaloneCalculator';
 import { PrintPreviewModal } from './components/PrintPreviewModal';
 import { SchoolMetadataModal } from './components/SchoolMetadataModal';
@@ -24,9 +25,9 @@ import { ImportExportModal } from './components/ImportExportModal';
 import { exportPetaJabatanToPdf, printViaIsolatedIframe } from './utils/pdfGenerator';
 import { CheckCircle2, Download, Printer } from 'lucide-react';
 
-const STORAGE_KEY_SCHOOLS = 'peta_jabatan_schools_v2';
-const STORAGE_KEY_ITEMS = 'peta_jabatan_items_by_school_v2';
-const STORAGE_KEY_TEACHERS = 'peta_jabatan_teachers_by_school_v2';
+const STORAGE_KEY_SCHOOLS = 'peta_jabatan_schools_v3';
+const STORAGE_KEY_ITEMS = 'peta_jabatan_items_by_school_v3';
+const STORAGE_KEY_TEACHERS = 'peta_jabatan_teachers_by_school_v3';
 
 export default function App() {
   // Load initial schools
@@ -173,6 +174,25 @@ export default function App() {
     setTimeout(() => {
       setIsSyncing(false);
       showToast(`Berhasil menyinkronkan data ${currentTeachers.length} guru ke dalam tabel Peta Jabatan!`);
+    }, 400);
+  };
+
+  const handleApplyPjmToPetaJabatan = () => {
+    setIsSyncing(true);
+    const updatedTeachers = DEFAULT_SMKN1_TEACHERS;
+    setTeachersBySchool((prev) => ({
+      ...prev,
+      [currentSchool.id]: updatedTeachers,
+    }));
+    const updated = syncPetaJabatanWithTeachers(currentItems, updatedTeachers);
+    setItemsBySchool((prev) => ({
+      ...prev,
+      [currentSchool.id]: updated,
+    }));
+    setTimeout(() => {
+      setIsSyncing(false);
+      showToast('Data Jam Mengajar SK PJM Dapodik berhasil disinkronkan ke Peta Jabatan! Formasi Bahasa Inggris Ahli Pertama kini terisi 1 GTT.');
+      setActiveTab('editor');
     }, 400);
   };
 
@@ -575,7 +595,18 @@ c. Pengembangan Karir: Mendorong 14 guru ASN PPPK dan guru PNS jenjang Ahli Pert
           />
         )}
 
-        {/* Tab 3: Real-time Analysis & Recommendations */}
+        {/* Tab 3: Pembagian Jam Mengajar (PJM Dapodik) & Audit Kesesuaian */}
+        {activeTab === 'pjm' && (
+          <PjmDapodikView
+            school={currentSchool}
+            teachers={currentTeachers}
+            petaItems={currentItems}
+            onApplyPjmToPetaJabatan={handleApplyPjmToPetaJabatan}
+            isSyncing={isSyncing}
+          />
+        )}
+
+        {/* Tab 4: Real-time Analysis & Recommendations */}
         {activeTab === 'analysis' && (
           <AnalysisDashboard
             school={currentSchool}

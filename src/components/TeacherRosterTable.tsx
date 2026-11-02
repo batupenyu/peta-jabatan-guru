@@ -295,6 +295,9 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
                 <th className="py-2.5 px-4 sticky top-0 z-20 bg-slate-100 border-b border-slate-300 shadow-xs">
                   MATA PELAJARAN DIAMPUS
                 </th>
+                <th className="py-2.5 px-3 text-center w-28 sticky top-0 z-20 bg-slate-100 border-b border-slate-300 shadow-xs">
+                  BEBAN MENGAJAR (PJM)
+                </th>
                 <th
                   onClick={() => toggleSort('retirement')}
                   className="py-2.5 px-4 cursor-pointer hover:bg-slate-200/80 sticky top-0 z-20 bg-slate-100 border-b border-slate-300 shadow-xs"
@@ -312,7 +315,7 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
             <tbody className="divide-y divide-slate-200">
               {sorted.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="py-10 text-center text-slate-400">
+                  <td colSpan={9} className="py-10 text-center text-slate-400">
                     Tidak ada guru yang cocok dengan kriteria pencarian.
                   </td>
                 </tr>
@@ -320,6 +323,9 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
                 sorted.map((item, idx) => {
                   const isRetiringSoon = item.nipInfo.yearsToRetirement <= 5;
                   const isCriticalRetirement = item.nipInfo.yearsToRetirement <= 2;
+                  const jtm = item.teachingHours || 0;
+                  const jjt = item.additionalHours || 0;
+                  const totalJp = item.totalWorkload !== undefined ? item.totalWorkload : jtm + jjt;
 
                   return (
                     <tr
@@ -344,6 +350,11 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
                           {item.isHeadmaster && (
                             <span className="text-[10px] bg-slate-900 text-white px-1.5 py-0.2 rounded-xs font-normal">
                               Kepsek
+                            </span>
+                          )}
+                          {item.status === 'GTT' && (
+                            <span className="text-[10px] bg-amber-100 text-amber-800 px-1.5 py-0.2 rounded-xs font-semibold">
+                              GTT
                             </span>
                           )}
                           {item.notes?.includes('Wakasek') && (
@@ -376,14 +387,53 @@ export const TeacherRosterTable: React.FC<TeacherRosterTableProps> = ({
                         </span>
                       </td>
 
-                      {/* JABATAN */}
-                      <td className="py-2 px-4 text-slate-800 font-medium">
-                        {item.functionalTitle}
+                      {/* JABATAN & GOLONGAN */}
+                      <td className="py-2 px-4 text-slate-800">
+                        <div className="font-medium">{item.functionalTitle}</div>
+                        {item.rank && (
+                          <div className="text-[10px] text-slate-500 font-mono">{item.rank}</div>
+                        )}
                       </td>
 
-                      {/* MATA PELAJARAN */}
+                      {/* MATA PELAJARAN & TUGAS TAMBAHAN */}
                       <td className="py-2 px-4 text-slate-800">
-                        {item.subject}
+                        <div className="font-medium">{item.subject}</div>
+                        {item.additionalDuties && (
+                          <div className="text-[10px] text-indigo-700 font-medium">
+                            + {item.additionalDuties}
+                          </div>
+                        )}
+                        {item.teachingAssignments && item.teachingAssignments !== item.subject && (
+                          <div className="text-[10px] text-slate-500 line-clamp-1 mt-0.5">
+                            {item.teachingAssignments}
+                          </div>
+                        )}
+                      </td>
+
+                      {/* BEBAN JAM MENGAJAR */}
+                      <td className="py-2 px-3 text-center">
+                        {item.totalWorkload !== undefined ? (
+                          <div className="flex flex-col items-center">
+                            <span
+                              className={`font-mono text-xs font-bold tabular-nums ${
+                                totalJp > 35
+                                  ? 'text-amber-700'
+                                  : totalJp >= 24
+                                  ? 'text-emerald-700'
+                                  : totalJp === 0
+                                  ? 'text-slate-400'
+                                  : 'text-rose-600'
+                              }`}
+                            >
+                              {totalJp} JP
+                            </span>
+                            <span className="text-[10px] text-slate-400 font-mono">
+                              {jtm} TM {jjt > 0 ? `+ ${jjt} TT` : ''}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-slate-400 font-mono text-[11px]">-</span>
+                        )}
                       </td>
 
                       {/* PROYEKSI PENSIUN */}

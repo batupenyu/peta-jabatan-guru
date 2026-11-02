@@ -25,6 +25,15 @@ export interface Teacher {
   schoolId: string;
   isHeadmaster?: boolean;
   notes?: string;
+  // Dapodik PJM (Pembagian Jam Mengajar) data
+  rank?: string; // Pangkat / Golongan Ruang (mis. Pembina / IVa, Penata Tk.1 / IIId, Ahli Pertama / IX)
+  teachingHours?: number; // Jam Tatap Muka per Minggu (JTM)
+  additionalHours?: number; // Ekuivalensi Tugas Tambahan (JJT)
+  totalWorkload?: number; // Total Beban Kerja (JTM + JJT)
+  additionalDuties?: string; // Rincian tugas tambahan (mis. Wakasek, Ka.Bengkel, Wali Kelas)
+  teachingAssignments?: string; // Rincian kelas & mapel diajarkan
+  isCertified?: boolean; // Status Sertifikasi Pendidik
+  counselingStudentCount?: number; // Jumlah siswa binaan (khusus guru BP/BK)
 }
 
 export interface PetaItem {
