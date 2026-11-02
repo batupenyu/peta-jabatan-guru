@@ -1,0 +1,6 @@
+{
+  "name": "Peta Jabatan Guru - Editor & Analisis Kebutuhan",
+  "description": "Aplikasi editor Peta Jabatan Tenaga Pendidik dan analisis kebutuhan formasi guru (ABK, PNS, PPPK, GTT) secara real-time dan akurat sesuai standar BKN dan Dinas Pendidikan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
